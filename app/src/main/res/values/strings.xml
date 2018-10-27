@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Route on map</string>
+    <string name="load_path">Загрузить путь</string>
+</resources>
