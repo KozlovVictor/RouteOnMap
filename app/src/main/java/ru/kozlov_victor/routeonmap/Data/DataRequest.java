@@ -5,7 +5,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Path;
 import ru.kozlov_victor.routeonmap.Data.Model.ResponseData;
 
-public interface GetData {
+public interface DataRequest {
 
     @GET("/{dataSource}")
     Call<ResponseData> loadData(@Path("dataSource") String dataSource);

@@ -18,8 +18,4 @@ public class CoordsItem {
         return latitude;
     }
 
-    @Override
-    public String toString() {
-        return "la: " + this.latitude + " " + "lo: " + this.longtitude;
-    }
 }
