@@ -17,14 +17,12 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import ru.kozlov_victor.routeonmap.Data.Controller.DataManager;
-import ru.kozlov_victor.routeonmap.Data.Model.CoordsItem;
 import ru.kozlov_victor.routeonmap.Data.Model.ResponseData;
 
 
@@ -36,7 +34,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     public Button loadPathButton;
     private List<LatLng> latLngList;
-    private List<CoordsItem> coordsItemList;
     private GoogleMap mMap;
 
     @Override
@@ -49,7 +46,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         loadPathButton = findViewById(R.id.load_path_button);
 
-        coordsItemList = new ArrayList<>();
         latLngList = new ArrayList<>();
 
         final DataManager dataManager = new DataManager();
@@ -58,14 +54,15 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         loadPathButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (!latLngList.isEmpty()) latLngList.clear();
                 dataManager.getDataRequest().loadData(ROUTE_PATH).enqueue(new Callback<ResponseData>() {
                     @Override
                     public void onResponse(Call<ResponseData> call, Response<ResponseData> response) {
                         if (response.body() != null) {
-                            coordsItemList.addAll(response.body().getCoords());
-                        }
-                        for (int i = 0; i < coordsItemList.size(); i++) {
-                            latLngList.add(new LatLng(coordsItemList.get(i).getLatitude(), coordsItemList.get(i).getLongtitude()));
+                            for (int i = 0; i < response.body().getCoords().size(); i++) {
+                                latLngList.add(new LatLng(response.body().getCoords().get(i).getLatitude(),
+                                        response.body().getCoords().get(i).getLongtitude()));
+                            }
                         }
                         drawRouteOnMap();
                     }
